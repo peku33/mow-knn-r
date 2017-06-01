@@ -1,6 +1,13 @@
 # Moduł odpowiedzialny za normalizację formatu danych
 # Główna funkcjonalność dotyczy zamiany atrybutów dyskretnych na ciągłe
 
+# Normalizuje kolumny ciągłe podanego zbioru danych z wykorzystaniem scale
+# Zwraca zbiór danych, w którym ciągłe kolumny są znormalizowane
+normalizer.set.scale_continuous <- function(data, columns.continuous) {
+	data.copy <- data
+	data[, columns.continuous] <- scale(data[, columns.continuous])
+	as.data.frame(data)
+}
 
 # Funkcja służąca do zamiany wartości dyskretnych na ciągłe, umożliwiające obliczenie odległości eudklidesowej.
 # Przyjmuje na wejściu dwa wektory atrybutów dyskretnych, dla których wykonuje porównanie ==
