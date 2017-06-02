@@ -1,3 +1,22 @@
+# Zwraca sumę dystansów dla k najbliższych punktów
+# Wejściowy data frame `data` jest sortowany na podstawie kolumny `data.column.distance`
+# Następnie zwracana jest suma odległości tych k punktów
+knn.data_frame.sum_distances <- function(data, data.column.distance, k) {
+
+	data.ordered.keys.k <- order(data[data.column.distance])[1:k]
+	data.ordered.distances.k <- data[data.ordered.keys.k, data.column.distance]
+	sum(data.ordered.distances.k)
+
+}
+
+knn.vector.get_indexes <- function(data.distances, k) {
+	order(data.distances)[1:k]
+}
+
+
+
+# Metody legacy
+# Deprecated
 knn.data_frame <- function(data, data.column.distance, data.column.data, k) {
 
 	# Posortuj wynik po kolumnie z odległością
