@@ -1,12 +1,12 @@
-kdd.namesfile_read <- function() {
-	f <- file('kddcup.names', open='r')
+kdd.namesfile.read <- function(kdd.namesfile.path) {
+	f <- file(kdd.namesfile.path, open='r')
 	data <- readLines(f)
 	close(f)
 
 	data
 }
 
-kdd.namesfile_labels_extract <- function(kdd.namesfile) {
+kdd.namesfile.labels.extract <- function(kdd.namesfile) {
 	# Pierwsza linia zawiera etykiety
 	kdd.namesfile_line <- kdd.namesfile[1]
 
@@ -17,7 +17,7 @@ kdd.namesfile_labels_extract <- function(kdd.namesfile) {
 	strsplit(kdd.namesfile_line, ",")[[1]]
 }
 
-kdd.namesfile_columns_extract <- function(kdd.namesfile) {
+kdd.namesfile.columns.extract <- function(kdd.namesfile) {
 
 	variables <- strsplit(kdd.namesfile, ": ")
 
@@ -34,7 +34,7 @@ kdd.namesfile_columns_extract <- function(kdd.namesfile) {
 	data.frame(name, is_continuous)
 }
 
-kdd.columns_add_label <- function(columns) {
+kdd.columns.add.label <- function(columns) {
 	
 	name <- c('label')
 	is_continuous <- c(FALSE)
@@ -42,13 +42,26 @@ kdd.columns_add_label <- function(columns) {
 	rbind(columns, data.frame(name, is_continuous))
 }
 
-kdd.data_read <- function(file_name, columns) {
+kdd.data.read <- function(file.name, columns) {
 
 	read.table(
-		file_name,
+		file.name,
 		header = FALSE,
 		sep = ",",
 		col.names = columns$name,
 		colClasses = lapply(columns$is_continuous, function(is_continuous) if(is_continuous) "numeric" else "character"),
 	)
+}
+
+kdd.data.write <- function(file.name, data) {
+
+	write.table(
+		data,
+		file.name,
+		sep = ",",
+		quote = FALSE,
+		row.names = FALSE,
+		col.names = FALSE,
+	)
+
 }
