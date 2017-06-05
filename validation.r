@@ -84,7 +84,7 @@ validation.pair.k <- function(name, data.set.train, data.set.test, data.columns.
 
 # Poniższe metody posiadają analogiczną składnię, z wyjątkiem braku konieczności dostarczenia niektórych parametrów
 
-validation.cross.svm <- function(data.sets, data.columns.use, data.label.column, data.label.value.normal) {
+validation.cross.svm <- function(data.sets, data.columns.use, data.label.column, data.label.value.normal, supervised) {
 
 	data.sets.num <- length(data.sets)
 
@@ -103,13 +103,19 @@ validation.cross.svm <- function(data.sets, data.columns.use, data.label.column,
 				data.sets[[index.test]],
 				data.columns.use,
 				data.label.column,
-				data.label.value.normal
+				data.label.value.normal,
+				supervised
 			)
 		}
 	}
 }
 
-validation.pair.svm <- function(name, data.set.train, data.set.test, data.columns.use, data.label.column, data.label.value.normal) {
+validation.pair.svm <- function(name, data.set.train, data.set.test, data.columns.use, data.label.column, data.label.value.normal, supervised) {
+
+	# Wyselekcjonuj dane trenujące
+	if(!supervised) {
+		data.set.train <- data.set.train[data.set.train[data.label.column] == data.label.value.normal, ]
+	}
 
 	# Stwórz model klasyfikacji
 	svm.model <- svm(

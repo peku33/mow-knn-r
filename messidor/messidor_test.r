@@ -20,15 +20,16 @@ for(messidor.data.i in 1:messidor.data.pairs.num) {
 	messidor.data.set.train <- messidor.data.read(file.name.train)
 	messidor.data.set.test <- messidor.data.read(file.name.test)
 
-	validation.pair.k(
+	validation.pair.svm(
 		sprintf('Data set pair = %d', messidor.data.i),
 		messidor.data.set.train,
 		messidor.data.set.test,
 		messidor.columns.use,
 		'Class',
 		'1',
-		'maximum',
-		messidor.k.values
+		#'maximum',
+		#messidor.k.values
+		FALSE
 	)
 }
 
