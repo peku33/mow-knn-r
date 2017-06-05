@@ -1,10 +1,5 @@
 source('kdd/kdd_loader.r')
-source('anomaly.r')
-source('distance.r')
-source('knn.r')
-source('cid.r')
-
-library('pROC')
+source('validation.r')
 
 kdd.load.data <- function(kdd.data.filename, kdd.columns) {
 
@@ -39,32 +34,5 @@ for(i in 1:kdd.data.sets.num) {
 }
 
 print('Running cross evaluation:')
-# plot.new()
-for(index.train in 1:(kdd.data.sets.num-1)) {
-	for(index.test in (index.train+1):kdd.data.sets.num) {
-
-		print(sprintf(' Train set = %d, Test set = %d', index.train, index.test))
-		matrix <- anomaly.score.data.multiple.k.matrix.build(
-			kdd.data.sets[[index.test]][, kdd.columns$is_continuous],
-			kdd.data.sets[[index.train]][kdd.data.sets[[index.train]]$label == "normal.", kdd.columns$is_continuous]
-		)
-
-		for(k in kdd.k.values) {
-
-			print(sprintf('  k = %d', k))
-			name <- sprintf('Training set = %d, Testing set = %d, K = %d', index.train, index.test, k)
-			distances <- anomaly.score.data.multiple.k.matrix.by(matrix, kdd.data.sets[[index.test]], k)
-
-			roc <- roc(
-				factor(kdd.data.sets[[index.test]]$label != "normal.", ordered = TRUE),
-				factor(distances, ordered = TRUE),
-			)
-
-			#roc.auc <- auc(roc)
-			#subname <- sprintf('AUC = %f', roc.auc)
-
-			plot.roc(roc, main = name, print.auc = TRUE)
-		}
-	}
-}
+validation.cross.k(kdd.data.sets, kdd.columns$is_continuous, 'label', 'normal.', kdd.k.values)
 dev.off()
