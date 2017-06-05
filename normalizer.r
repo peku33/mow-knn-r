@@ -9,6 +9,9 @@ normalizer.set.scale_continuous <- function(data, columns.continuous) {
 	as.data.frame(data)
 }
 
+# Metody legacy
+# Deprecated
+
 # Funkcja służąca do zamiany wartości dyskretnych na ciągłe, umożliwiające obliczenie odległości eudklidesowej.
 # Przyjmuje na wejściu dwa wektory atrybutów dyskretnych, dla których wykonuje porównanie ==
 # Wszystkim atrybutom dyskretnym z row1 przypisuje wartość ciągłą value.same
