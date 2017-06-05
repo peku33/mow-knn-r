@@ -62,7 +62,7 @@ validation.pair.k <- function(name, data.set.train, data.set.test, data.columns.
 		distances <- anomaly.score.data.multiple.k.matrix.by(matrix, data.set.test, k)
 
 		# Stwórz krzywą ROC
-		roc <- roc(
+		roc.result <- roc(
 			factor(data.set.test[data.label.column] != data.label.value.normal, ordered = TRUE),
 			factor(distances, ordered = TRUE)
 		)
@@ -71,7 +71,7 @@ validation.pair.k <- function(name, data.set.train, data.set.test, data.columns.
 
 		# Wykres
 		plot.roc(
-			roc,
+			roc.result,
 			main = name.k,
 			print.auc = TRUE
 		)
@@ -129,13 +129,13 @@ validation.pair.svm <- function(name, data.set.train, data.set.test, data.column
 	svm.predictions <- predict(svm.model, data.set.test[, data.columns.use], decision.values = TRUE)
 	distances <- attr(svm.predictions, 'decision.values')
 
-	roc <- roc(
+	roc.result <- roc(
 		factor(data.set.test[data.label.column] != data.label.value.normal, ordered = TRUE),
 		factor(distances, ordered = TRUE)
 	)
 
 	plot.roc(
-		roc,
+		roc.result,
 		main = name,
 		print.auc = TRUE
 	)
