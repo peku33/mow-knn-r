@@ -11,7 +11,7 @@ source('normalizer.r')
 #
 # 311k wierszy:
 # 	BŁĄD: nie można przydzielić wektora o rozmiarze 360.4 Gb
-distance.data_frame.single.continuous.1 <- function(test.row, train.rows) {
+distance.data_frame.single.continuous.1 <- function(test.row, train.rows, method) {
 
 	# Pierwsza wersja
 	#data.combined <- rbind(test.row, train.rows)
@@ -20,7 +20,7 @@ distance.data_frame.single.continuous.1 <- function(test.row, train.rows) {
 	#distances.vector
 
 	# Można, bez straty wydajnośći wykorzystać wersję dla wielu parametrów
-	distance.data_frame.multiple.continuous.1(test.row, train.rows)[1, ]
+	distance.data_frame.multiple.continuous.1(test.row, train.rows, method)[1, ]
 }
 
 # 10K wierszy:
@@ -30,10 +30,10 @@ distance.data_frame.single.continuous.1 <- function(test.row, train.rows) {
 # 311k wierszy:
 # użytkownik     system   upłynęło
 #    676.116      0.609    676.679
-distance.data_frame.single.continuous.2 <- function(test.row, train.rows) {
+distance.data_frame.single.continuous.2 <- function(test.row, train.rows, method) {
 	
 	distances.frame <- apply(train.rows, 1, function(train.row) {
-		dist(rbind(test.row, train.row))[1]
+		dist(rbind(test.row, train.row), method = method)[1]
 	})
 
 	distances.vector <- as.vector(distances.frame)
@@ -49,14 +49,14 @@ dist.index.n.i.j <- function(n, i, j) {
 }
 
 # Korzystając z pojedynczego obliczenia macierzy odległości zwraca wektory odległości pomiędzy wierszami z test.rows, a wierszami z train.rows
-distance.data_frame.multiple.continuous.1 <- function(test.rows, train.rows) {
+distance.data_frame.multiple.continuous.1 <- function(test.rows, train.rows, method) {
 
 	# Połącz dane testowe i trenujące w jedną macierz
 	data.combined <- rbind(test.rows, train.rows)
 
 	# Oblicz odległości pomiędzy elementami macierzy
 	# To najszybsza opcja, pomimo tego, że w tle liczy wszystkie odległości
-	distances.matrix <- dist(data.combined)
+	distances.matrix <- dist(data.combined, method = method)
 	distances.matrix.size <- attr(distances.matrix, "Size")
 
 	# Dla każdego wiersza z danych testowych wyrwij wektor odległości od danych trenujących

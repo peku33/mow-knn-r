@@ -17,14 +17,15 @@ anomaly.score.vector.k <- function(distances.vector, k) {
 
 # Dla podanego zbioru danych testowych oraz trenujących buduje macierz odległości
 # Rozdzielenie implementacji pozwala na szybkie wykorzystanie tej samej macierzy z różnymi wartościami k
-anomaly.score.data.multiple.k.matrix.build <- function(test.rows, train.rows.normal) {
+anomaly.score.data.multiple.k.matrix.build <- function(test.rows, train.rows.normal, method) {
 
 	# Oblicz macierz odległości pomiędzy danymi testowymi a trenującymi.
 	# Jeden wiersz macierzy dla jednego wektora z danych testowych
 	# Kolejne kolumny macierzy to odległości od kolejnych danych trenujących
 	distance.data_frame.multiple.continuous.1(
 		test.rows,
-		train.rows.normal
+		train.rows.normal,
+		method
 	)
 }
 
@@ -54,12 +55,13 @@ anomaly.score.data.multiple.k.matrix.by <- function(distances.matrix, test.rows,
 
 # Właściwa metoda obliczająca wektor miary niepodobieństw
 # Łączy metody .build i .by
-anomaly.score.data.multiple.k <- function(test.rows, train.rows.normal, k) {
+anomaly.score.data.multiple.k <- function(test.rows, train.rows.normal, method, k) {
 
 	anomaly.score.data.multiple.k.matrix.by(
 		anomaly.score.data.multiple.k.matrix.build(
 			test.rows,
-			train.rows.normal
+			train.rows.normal,
+			method
 		),
 		test.rows,
 		k

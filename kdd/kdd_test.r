@@ -17,5 +17,12 @@ for(i in 1:kdd.data.sets.num) {
 }
 
 print('Running cross evaluation:')
-validation.cross.k(kdd.data.sets, kdd.columns$is_continuous, 'label', 'normal.', kdd.k.values)
+validation.cross.svm(
+	kdd.data.sets,
+	kdd.columns$is_continuous,
+	'label',
+	'normal.'#,
+	#'manhattan',
+	#kdd.k.values
+)
 dev.off()

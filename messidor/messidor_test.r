@@ -2,7 +2,7 @@ source('messidor/messidor_loader.r')
 source('validation.r')
 
 messidor.data.pairs.num <- 10
-messidor.k.values <- c(1, 2, 5, 10, 25)
+messidor.k.values <- c(1, 2, 5, 10, 25, 50, 100, 150, 200, 250, 275)
 
 print('Loading meta:')
 messidor.columns <- messidor.columns.get()
@@ -27,6 +27,7 @@ for(messidor.data.i in 1:messidor.data.pairs.num) {
 		messidor.columns.use,
 		'Class',
 		'1',
+		'maximum',
 		messidor.k.values
 	)
 }
