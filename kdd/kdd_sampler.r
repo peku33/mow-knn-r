@@ -8,7 +8,7 @@ kdd.columns <- kdd.columns.add.label(kdd.columns)
 kdd.data <- kdd.data.read('kdd/data/kddcup.data_labeled', kdd.columns)
 
 samples.count <- 10
-sample.nrow <- 10000
+sample.nrow <- 5000
 
 for(sample.i in 1:samples.count) {
 
