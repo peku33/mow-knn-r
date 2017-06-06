@@ -90,21 +90,48 @@ validation.cross.svm <- function(data.sets, data.columns.use, data.label.column,
 
 	# Dla każdej pary zbiorów...
 	for(index.train in 1:data.sets.num) {
+
+		print(sprintf(' Train set = %d', index.train))
+
+		# Złap zbiór danych
+		data.set.train <- data.sets[[index.train]]
+
+		# Wyselekcjonuj dane trenujące
+		if(!supervised) {
+			data.set.train <- data.set.train[data.set.train[data.label.column] == data.label.value.normal, ]
+		}
+
+		# Stwórz model klasyfikacji
+		svm.model <- svm(
+			x = data.set.train[, data.columns.use],
+			y = data.set.train[data.label.column] == data.label.value.normal,
+			scale = FALSE,
+			type = 'one-classification'
+		)
+
 		for(index.test in 1:data.sets.num) {
-			print(sprintf(' Train set = %d, Test set = %d', index.train, index.test))
+
+			print(sprintf('  Test set = %d', index.test))
+
+			# Złap zbiór danych
+			data.set.test <- data.sets[[index.test]]
 
 			# Tytuł wykresu
 			name <- sprintf('Training set = %d, Testing set = %d', index.train, index.test)
 
-			# Wykonaj walidację dla pary
-			validation.pair.svm(
-				name,
-				data.sets[[index.train]],
-				data.sets[[index.test]],
-				data.columns.use,
-				data.label.column,
-				data.label.value.normal,
-				supervised
+			# Przewidź wartości
+			svm.predictions <- predict(svm.model, data.set.test[, data.columns.use], decision.values = TRUE)
+			distances <- attr(svm.predictions, 'decision.values')
+
+			roc.result <- roc(
+				factor(data.set.test[data.label.column] != data.label.value.normal, ordered = TRUE),
+				factor(distances, ordered = TRUE)
+			)
+
+			plot.roc(
+				roc.result,
+				main = name,
+				print.auc = TRUE
 			)
 		}
 	}
